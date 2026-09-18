@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+
+# 编辑器
+.vscode/
+.idea/
+
+# 同步与日志
+*.log
+
+# 操作系统
+Thumbs.db
+desktop.ini
+.DS_Store

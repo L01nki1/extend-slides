@@ -1,0 +1,16 @@
+# 统一换行符，避免跨平台协作时出现整文件级差异
+* text=auto eol=lf
+
+# Windows PowerShell 5.1 对 CRLF 最友好。
+# 注意：sync.ps1 必须保持纯 ASCII —— 该文件一旦出现非 ASCII 字符，
+# PowerShell 5.1 会按系统 ANSI 代码页解码并直接导致语法解析失败。
+*.ps1 text eol=crlf
+
+# 显式标记二进制，防止被当成文本做换行转换
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.pdf binary
+*.pptx binary
+*.docx binary
