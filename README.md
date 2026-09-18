@@ -38,33 +38,8 @@ extend-slides/
 
 ## 安装
 
-### 方式一：用同步脚本（推荐）
-
-```powershell
-# 安装到个人级 skills 目录（自动探测 .copilot / .workbuddy / .agents / .claude）
-powershell -ExecutionPolicy Bypass -File .\scripts\sync.ps1 -Scope personal
-
-# 安装到某个项目的 .github\skills
-powershell -ExecutionPolicy Bypass -File .\scripts\sync.ps1 -Scope project -ProjectPath D:\MyCourse
-
-# 两处都装
-powershell -ExecutionPolicy Bypass -File .\scripts\sync.ps1 -Scope both -ProjectPath D:\MyCourse
-
-# 手动指定个人级 skills 根目录
-powershell -ExecutionPolicy Bypass -File .\scripts\sync.ps1 -Scope personal -PersonalRoot "$env:USERPROFILE\.workbuddy\skills"
-```
-
-> **为什么要加 `-ExecutionPolicy Bypass`**：Windows PowerShell 5.1 默认禁止运行 `.ps1` 脚本。这种方式只对本次进程生效，**不需要修改系统策略、也不需要管理员权限**。
->
-> **为什么脚本里是英文提示**：Windows PowerShell 5.1 在没有 UTF-8 BOM 时按系统 ANSI 代码页读取 `.ps1`，中文会乱码并**直接导致语法解析失败**。因此 `sync.ps1` 刻意保持纯 ASCII，请勿在其中加入中文。
-
-脚本会做三件事：
-
-1. 校验文件夹名与 `SKILL.md` 中的 `name` 是否一致（不一致会导致 skill 无法被发现）。
-2. 用 `robocopy /MIR` 镜像同步（排除 `.git`、`.venv`、`venv`、`.vscode`、`node_modules`、`__pycache__`、各类缓存目录、`*.log`、`*.pyc`）。
-3. 打印目标路径，并提示重载 VS Code。
-
-> 目标目录已存在但不是有效 skill 目录时，脚本会跳过并警告；确认要覆盖时加 `-Force`。
+### 方式一：让AI帮助你
+告诉AI：为我安装https://github.com/L01nki1/extend-slides这个skill
 
 ### 方式二：手动复制
 
@@ -87,11 +62,14 @@ git clone https://github.com/<你的用户名>/extend-slides.git "$env:USERPROFI
 
 **注意：不要直接解压 GitHub 网页上的 "Download ZIP"。** 那个包解压出来的文件夹名会带分支后缀（如 `extend-slides-main`），而 skill 加载要求文件夹名与 `SKILL.md` 中的 `name` 严格一致，**必须先重命名为 `extend-slides`** 再放入 skills 目录。
 
+（当然如果你想自己改也可以）
+
+
 ---
 
 ## 依赖
 
-全部可选，缺失时不阻断流程。其中 **OCR 是唯一会在流程开始时主动询问的能力** —— 若未检测到，技能会先告知你「纯图片素材可能被跳过」，并给出安装指令，由你选择现在装还是继续；其余能力缺失时降级为「提示你人工导出」。
+全部可选，缺失时不阻断流程。其中 **OCR 是唯一会在流程开始时主动询问的能力** —— 若未检测到，技能会先告知你「纯图片素材可能被跳过」，并给出安装指令，由你选择现在装还是继续；其余能力缺失时会提示你人工导出。
 
 ```powershell
 pip install python-pptx     # 抽取 PPTX 文字与图片
@@ -111,7 +89,7 @@ python scripts/probe_env.py --json   # 机器可读
 
 ## 使用
 
-在 Copilot Chat 中输入 `/extend-slides`，或直接描述需求（如「帮我把这份 PPT 扩展成复习笔记」）触发。
+在你的agent中输入 `/extend-slides`，或直接描述需求（如「使用/extend-slides 这个skill，为我生成这个课程讲义扩展讲解。输出到D:/your_project_name这个文件夹中」）触发。
 
 首次使用会问三件事：**课程名、输出位置、模式偏好**。之后的回答写入课程目录的 `_课程档案.md`，同一门课后续章节自动沿用模式，不再重复询问。
 
@@ -161,11 +139,18 @@ python scripts/render_pdf_images.py .\lecture03.pdf .\神经网络课程\ --dpi 
 - **只增不删**：原资料每个标题、每个知识点都要在输出中有落点，交付前用检查清单逐项核对。唯一例外是无 OCR 时的纯图片页。
 - **章级可溯**：正文不逐段标注来源；每章用「材料来源」表统一记录「小节 → 文件 / 页码」。
 - **不臆造考点**：没有往年题或教师说明时，只能写「基于本页内容的考点推断」。
-- **跨会话记忆**：skill 本身不记忆，靠课程目录下的 `_课程档案.md` 落盘。
+- **跨会话记忆**：skill 本身不记忆，靠课程目录下的 `_课程档案.md` 实现跨项目记忆。
 - **格式优先级**：Markdown 原生写法优先（段落、列表、表格、行内代码）。公式**默认不用 LaTeX**，只有分式、根式、矩阵这类确实无法原生表达时才用 `$...$`；图表用 Mermaid。
 - **原文与讲解的区分**：原文直接呈现、**不加引用块**（引用块会破坏表格渲染）；AI 生成的讲解统一用 `==...==` 包裹。
-- **关于 `==` 高亮**：Obsidian 会正常渲染成高亮，VS Code 与 GitHub 的 Markdown 预览不会。本 skill 面向 Obsidian 使用，故采用该标记。
+- **关于 `==` 高亮**：Obsidian 会正常渲染成高亮，VS Code 与 GitHub 的 Markdown 预览不会。是否能够正常渲染就看你使用什么把markdown转成PDF了。
 
+---
+## 碎碎念和Q&A
+- *为什么做这个*：在CS6480的课上被老师纯AI生成的PPT和难绷的口音气晕过去了，一气之下做此skill。
+- *最适合什么学生*：在境外读理科和新工科的同学，尤其是来自**CityUHK的计算学院**的master同学。
+- *觉得不好用还不会改的话怎么办*：通过最上面的邮件联系我，用最直白最不绕弯子的语言说出你的改进建议或者需求。
+- *README好难看*：对不起这个写的时候用了一下AI，，
+- *token消耗的多吗*：看你喂进去什么文件了，越接近纯文本token消耗的越少，不过总体的话可以接受，可以去workbuddy使用免费额度，如果课程内容适中的话100credits可以完整生成一个12周的课程。如果全是图片需要OCR的话会很慢。速度参考CS5351三周课件六七百页且有大量图片，共花费90分钟左右，最后生成PDF800页，deepseekv4.1flash消耗125.97credits。
 ---
 
 ## 许可证
