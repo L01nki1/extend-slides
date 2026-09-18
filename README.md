@@ -38,7 +38,7 @@ extend-slides/
 ## 安装
 
 ### 方式一：让AI帮助你
-告诉AI：为我安装https://github.com/L01nki1/extend-slides这个skill
+告诉AI：为我安装https://github.com/L01nki1/extend-slides 这个skill
 
 ### 方式二：手动复制
 
