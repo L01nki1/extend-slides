@@ -30,8 +30,7 @@ extend-slides/
 └── scripts/
     ├── probe_env.py                  # 环境能力探测
     ├── extract_pptx.py               # PPTX 文字与图片抽取
-    ├── render_pdf_images.py          # PDF 逐页转图片
-    └── sync.ps1                      # 同步安装到个人级 / 项目级
+    └── render_pdf_images.py          # PDF 逐页转图片
 ```
 
 ---
