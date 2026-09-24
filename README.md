@@ -10,6 +10,10 @@
 
 ---
 
+本项目已收录至CityUHub
+[![CityU Hub](https://cityu-hub.bond/badge/l01nki1-extend-slides.svg)](https://cityu-hub.bond/project/l01nki1-extend-slides)
+
+---
 ## 目录结构
 
 本仓库根目录就是 skill 本体
