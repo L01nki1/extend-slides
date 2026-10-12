@@ -57,16 +57,11 @@ extend-slides/
 
 ### 方式三：从 GitHub 获取
 
-**推荐：`git clone`**，克隆出来的文件夹名天然正确。
+**推荐：`git clone`**
 
 ```powershell
-git clone https://github.com/<你的用户名>/extend-slides.git "$env:USERPROFILE\.copilot\skills\extend-slides"
+git clone https://github.com/L01nki1/extend-slides
 ```
-
-**注意：不要直接解压 GitHub 网页上的 "Download ZIP"。** 那个包解压出来的文件夹名会带分支后缀（如 `extend-slides-main`），而 skill 加载要求文件夹名与 `SKILL.md` 中的 `name` 严格一致，**必须先重命名为 `extend-slides`** 再放入 skills 目录。
-
-（当然如果你想自己改也可以）
-
 
 ---
 
